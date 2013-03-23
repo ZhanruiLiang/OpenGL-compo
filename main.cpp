@@ -128,12 +128,12 @@ void reshape(int w, int h){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(90, (double)w/h, 1, 500);
-    // int R = 20;
+    // int R = 24;
     // glOrtho(-R, R, -R*h/w, R*h/w, 1, 100);
 }
 
 void update(){
-    usleep(1e6/FPS/2);
+    usleep(1e6/FPS/SPEED);
     pthread_mutex_lock(&mutexStage);
     // camera->rotate(1, Vector3(0, 1, 0));
         camera->update(1./FPS);

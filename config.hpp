@@ -1,5 +1,6 @@
 #pragma once
 const int FPS = 60;
+const double SPEED = 1;
 
 const double BODY_HEIGHT = 5;
 const double BODY_WIDTH = 3;

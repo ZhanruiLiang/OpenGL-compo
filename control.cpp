@@ -12,7 +12,6 @@ Event* Controller::parse_line(std::ifstream& ist){
     if(ssline >> type){
         try{
             if(type == "#"){
-                getline(ist, line);
             }else if(type == "r" or type == "rotate"){
                 Vector3 norm;
                 double angle;
@@ -59,16 +58,18 @@ void Controller::load_events(const string& path){
             events.push_back(event);
         }
     }
+    std::cout << "loaded " << path << std::endl;
 }
 
 void Controller::update(double dt){
     double oldTime = time;
     time += dt;
+    // printf("time: %.2lf\n", time);
     TR(ei, events){
         Event* event = *ei;
         if(event->start >= oldTime and event->start < time){
 #ifdef DEBUG
-            // std::cout << "apply: " << event->str() << std::endl;
+            // std::cout << "apply: " << event->str() << " at " << time << std::endl;
 #endif
             event->apply();
         }
