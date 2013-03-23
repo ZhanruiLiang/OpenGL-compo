@@ -249,32 +249,39 @@ RightFoot::RightFoot(){
 }
 
 Hand::Hand(int side){
-    set_id((side == -1?"left-hand":"right-hand"));
     PCompo plam(new Box(HAND_WIDTH, HAND_LENGTH, HAND_THICK));
     plam->translate(Vector3(0, HAND_LENGTH/2, 0));
     add_child(plam);
+    // thumb
+    vector<double> thumbLens = {THUMB_LENGTH * .55, THUMB_LENGTH * .45};
+    PCompo thumb(new Finger(thumbLens));
+    thumb->translate(Vector3(side*(HAND_WIDTH/2+FINGER_RADIUS), HAND_LENGTH/2, 0));
+    // thumb->set_color(Color(0, 0.5, 0));
+    add_child(thumb);
     // fingers
     vector<double> fingerLens = {
         FINGER_LENGTH * .5, FINGER_LENGTH * .25, FINGER_LENGTH * .25};
     double sep = (HAND_WIDTH - (N_FINGERS - 1)*FINGER_RADIUS*2)/(N_FINGERS-2);
-    char buf[20];
     for(int iFinger = 0; iFinger < N_FINGERS-1; iFinger++){
         PCompo finger(new Finger(fingerLens));
         finger->translate(Vector3(
                 side*(HAND_WIDTH/2-FINGER_RADIUS-iFinger*(sep + 2*FINGER_RADIUS)), 
                 HAND_LENGTH,
                 HAND_THICK/2-FINGER_RADIUS));
-        sprintf(buf, "%s-finger-%d", (side==-1?"left":"right"), iFinger+1);
-        finger->set_id(string(buf));
         add_child(finger);
     }
-    // thumb
-    vector<double> thumbLens = {THUMB_LENGTH * .55, THUMB_LENGTH * .45};
-    PCompo thumb(new Finger(thumbLens));
-    thumb->translate(Vector3(side*(HAND_WIDTH/2+FINGER_RADIUS), HAND_LENGTH/2, 0));
-    thumb->set_id(side == -1?"left-thumb":"right-thumb");
-    // thumb->set_color(Color(0, 0.5, 0));
-    add_child(thumb);
+    set_id((side == -1?"left-hand":"right-hand"));
+}
+
+void Hand::set_id(const string& id){
+    Component::set_id(id);
+    if(id.size()){
+        char buf[20+id.size()];
+        for(int iFinger = 0; iFinger < N_FINGERS; iFinger++){
+            sprintf(buf, "%s-finger-%d", id.c_str(), iFinger);
+            get_finger(iFinger)->set_id(buf);
+        }
+    }
 }
 
 Finger::Finger(const vector<double>& lens){
@@ -290,8 +297,29 @@ Finger::Finger(const vector<double>& lens){
     }
 }
 
+void Finger::set_id(const string& id){
+    Component::set_id(id);
+    if(id.size()){
+        char buf[10 + id.size()];
+        FingerSec* sec = (FingerSec*)childs[0];
+        for(int iSec = 0; sec; iSec++){
+            sprintf(buf, "%s-sec-%d", id.c_str(), iSec);
+            sec->set_id(buf);
+            sec = ((FingerSec*)sec)->next_sec();
+        }
+    }
+}
+
 FingerSec::FingerSec(double len){
     PCompo box(new Box(FINGER_RADIUS*2, len, FINGER_RADIUS*2));
     box->translate(Vector3(0, len/2, 0));
     add_child(box);
 }
+
+FingerSec* FingerSec::next_sec()const{
+    if(childs.size()>1){
+        return (FingerSec*)childs[1];
+    }
+    return NULL;
+}
+

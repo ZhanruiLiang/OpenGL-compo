@@ -1,11 +1,12 @@
 #pragma once
-#include "gltools.hpp"
 #include <iostream>
 #include <cstdio>
 #include <string>
 #include <cassert>
 #include <map>
-#include <tr1/memory>
+#include <memory>
+#include "gltools.hpp"
+#include "config.hpp"
 using std::string;
 
 class Component;
@@ -35,7 +36,10 @@ class Component{
             else
                 return PCompo(NULL);
         }
-        void set_id(const string& id){
+        virtual void set_id(const string& id){
+            if(this->id.size()){
+                idmap.erase(this->id);
+            }
             this->id = id;
             if(id.size()){
                 idmap[id] = PCompo(this);
@@ -169,14 +173,23 @@ class Hand:public Component{
 public:
     // side = -1 for left, 1 for right
     Hand(int side=-1);
-};
-
-class Finger:public Component{
-public:
-    Finger(const vector<double>& lens);
+    virtual void set_id(const string& id);
+    /* 0 for thumb, 1 for index, etc.
+     */
+    PCompo get_finger(int idx)const{
+        return childs[idx+1];
+    }
 };
 
 class FingerSec:public Component{
 public:
     FingerSec(double len);
+    FingerSec* next_sec()const;
 };
+
+class Finger:public Component{
+public:
+    Finger(const vector<double>& lens);
+    virtual void set_id(const string& id);
+};
+
