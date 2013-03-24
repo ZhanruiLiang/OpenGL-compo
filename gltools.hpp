@@ -1,6 +1,6 @@
 #pragma once
 #include<vector>
-#include<GL/glut.h>
+#include<GL/freeglut.h>
 #include<string>
 #include<stdarg.h>
 #include<cmath>

@@ -2,6 +2,10 @@
 const int FPS = 60;
 const double SPEED = 1;
 
+#define SOLID 1
+
+const float LIGHT0_POS[3] = {30, 30, 30};
+
 const double BODY_HEIGHT = 5;
 const double BODY_WIDTH = 3;
 const double BODY_THICK = 1;

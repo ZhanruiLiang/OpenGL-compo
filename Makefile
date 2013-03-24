@@ -2,7 +2,7 @@
 BIN = main
 
 # Define source files
-SRCS = main.cpp gltools.cpp control.cpp compo.cpp
+SRCS = main.cpp gltools.cpp control.cpp compo.cpp body.cpp
 
 # Define header file paths
 INCPATH = -I./
