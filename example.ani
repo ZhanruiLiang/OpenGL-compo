@@ -1,26 +1,69 @@
+# This is the example animation config file.
+#
 # General format: 
-#   type {targetID} {startTime} {endTime} {*args}
-# Event type can be : 
+#   type {targetID} {startTime} {*args}
+# Event types: 
 #   r(rotate) 
 #   j(jump) 
 #   t(translate)
-# formats:
+#   c(color)
+# Formats:
 #   r {targetID} {startTime} {endTime} {angle} {normX} {normY} {normZ}
-#   j {startTime} {endTime} # jump from startTime to endTime 
 #   t {targetID} {startTime} {endTime} {dx} {dy} {dz}
+#   j {startTime} {destTime} 
+#   c {targetID} {r} {g} {b} # r,g,b in range [0, 1]
+# Target names:
+#   Refer to 'body.xml'
+
+# set color
+#  Note that the order is important.
+c body .56 .21 .70
+c head .98 .95 .67
+c left-lower-arm .98 .95 .67
+c right-lower-arm .98 .95 .67
+c left-leg .36 .84 .67
+c right-leg .36 .84 .67
+c left-lower-leg .98 .95 .67
+c right-lower-leg .98 .95 .67
 
 # prepare
-t body 0 0.5 0 10 0
-r body 0 1 70 1 0 0
+# t body 0 .1 0 10 0
+t head 0 .1 0 .3 0
+r left-arm 0 .1 -80 0 0 1
+r right-arm 0 .1 -80 0 0 -1
 
-r left-arm 0 .1 -100 1 0 0
-r left-arm .1 .2 10 0 0 1
-r right-arm 0 .1 -100 1 0 0
-r left-arm .1 .2 10 0 -1 0
-r left-leg 0 1 20 0 0 1
-r right-leg 0 1 20 0 0 -1
-r right-legg 0 1 20 0 0 -1
-r right-leg 0
+# leg
+r left-leg .1 1 30 -1 0 0
+r left-lower-leg .1 1 10 -1 0 0
+r right-leg .1 1 20 1 0 0
+r right-lower-leg .1 1 -10 1 0 0
+# arm
+r left-arm .1 1 20 1 0 0
+r left-lower-arm .1 1 10 1 0 0
+r right-arm .1 1 -10 1 0 0
+r right-lower-arm .1 1 10 1 0 0
 
-# looping
 j 3 1
+# walking
+r left-leg 1 2 -50 -1 0 0
+r right-leg 1 2 -50 1 0 0
+r right-lower-leg 1 1.5 -60 1 0 0
+r right-lower-leg 1.5 2 60 1 0 0
+r left-arm 1 2 -30 1 0 0
+r left-lower-arm 1 2 10 1 0 0
+r left-arm 2 3 30 1 0 0
+r left-lower-arm 2 3 -10 1 0 0
+
+r left-leg 2 3 50 -1 0 0
+r right-leg 2 3 50 1 0 0
+r left-lower-leg 2 2.5 60 -1 0 0
+r left-lower-leg 2.5 3 -60 -1 0 0
+r right-arm 1 2 -30 -1 0 0
+r right-lower-arm 1 2 10 -1 0 0
+r right-arm 2 3 30 -1 0 0
+r right-lower-arm 2 3 -10 -1 0 0
+
+t body 1 1.5 0 .3 0
+t body 1.5 2 0 -.3 0
+t body 2 2.5 0 .3 0
+t body 2.5 3 0 -.3 0
